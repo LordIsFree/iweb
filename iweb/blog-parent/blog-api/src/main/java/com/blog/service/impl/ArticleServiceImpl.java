@@ -5,8 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.blog.data.param.PageParams;
 import com.blog.data.pojo.Article;
 import com.blog.data.vo.ArticleVo;
+import com.blog.data.vo.TagVo;
 import com.blog.mapper.ArticleMapper;
 import com.blog.service.ArticleService;
+import com.blog.mapper.SysUserMapper;
+import com.blog.service.SysUserService;
+import com.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,10 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleMapper articleMapper;
+    @Autowired
+    SysUserService sysUserService;
+    @Autowired
+    TagService tagService;
 
     @Override
     public List<ArticleVo> listArticlesPage(PageParams pageParams) {
@@ -45,7 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
         //articleList转为articleList
         for (Article article : articleList) {
             //article转为articleVo
-            ArticleVo articleVo = copyArticleVo(article);
+            ArticleVo articleVo = copyArticleVo(article,true,false,true);
             articleVoList.add(articleVo);
         }
         return articleVoList;
@@ -57,8 +65,13 @@ public class ArticleServiceImpl implements ArticleService {
      * @param article 文章
      * @return {@link ArticleVo}
      */
-    private ArticleVo copyArticleVo(Article article) {
+    private ArticleVo copyArticleVo(Article article,boolean isAuthor,boolean isBody,boolean isTag) {
         ArticleVo articleVo = new ArticleVo();
+        if(isAuthor){
+            //通过 作者id AuthorId在数据库中查询作者名 id->name
+            String nickName = sysUserService.findNickNameByAuthorId(article.getAuthorId());
+            articleVo.setAuthor(nickName);
+        }
         //article转为articleVo
         BeanUtils.copyProperties(article, articleVo);
         //毫毛日期转成正常日期
@@ -67,6 +80,10 @@ public class ArticleServiceImpl implements ArticleService {
         String createDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
         //更新日期
         articleVo.setCreateDate(createDate);
+        if(isTag){
+            List<TagVo> tagVoList = tagService.findTagsByArticleId(article.getAuthorId());
+            articleVo.setTags(tagVoList);
+        }
         return articleVo;
     }
 }

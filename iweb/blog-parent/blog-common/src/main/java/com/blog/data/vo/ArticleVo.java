@@ -2,6 +2,8 @@ package com.blog.data.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ArticleVo {
     private Long id;
@@ -12,5 +14,5 @@ public class ArticleVo {
     private int weight;
     private String createDate;
     private String author;
-//    private List<TagVo> tags;
+    private List<TagVo> tags;
 }
