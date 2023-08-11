@@ -86,4 +86,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleVo;
     }
+
+    public List<ArticleVo> findArticles(List<Long> articleIds){
+        //一组文章id ,查询整个articleVo对象
+        return articleMapper.findArticles(articleIds);
+    }
 }

@@ -4,7 +4,25 @@
 
 <mapper namespace="com.blog.mapper.TagMapper">
     <select id="fingTags" parameterType="Long" resultType="com.blog.data.pojo.Tag">
-        select * from ms_tag where id in
-                                   (select tag_id from ms_article_tag where article_id = #{id})
+        select * from ms_tag
+        <where>
+            id in (select tag_id from ms_article_tag where article_id = #{id})
+        </where>
+    </select>
+
+    <select id="hot" resultType="com.blog.data.pojo.Tag">
+        select * from ms_tag
+        <where>
+            id in (select tag_id from ms_article_tag
+            group by tag_id order by count(article_id) desc)
+        </where>
+        limit 0,#{size}
+    </select>
+
+    <select id="findArticleIds" parameterType="Long" resultType="Long">
+        select article_id from ms_article_tag
+        <where>
+            tag_id = #{tagId}
+        </where>
     </select>
 </mapper>

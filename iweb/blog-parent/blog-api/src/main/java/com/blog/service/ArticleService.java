@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ArticleService {
     List<ArticleVo> listArticlesPage(PageParams pageParams);
+    List<ArticleVo> findArticles(List<Long> articleIds);
 }

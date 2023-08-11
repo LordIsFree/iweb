@@ -5,7 +5,6 @@ import com.blog.data.vo.ArticleVo;
 import com.blog.data.vo.Result;
 import com.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +15,13 @@ import java.util.List;
 public class ArticleController {
     @Autowired
     ArticleService articlServiceImpl;
+
+    /**
+     * 文章分页展示请求
+     *
+     * @param pageParams 页面参数
+     * @return {@link Result}
+     */
     @PostMapping
     public Result articles(@RequestBody PageParams pageParams) {
         //调service获得一个vo文章集合

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TagService {
     List<TagVo> findTagsByArticleId(Long id);
-    List<TagVo> copyList(List<Tag> tagList);
+    List<TagVo> hot(int limit);
 }
