@@ -11,4 +11,7 @@ import java.util.List;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
     List<ArticleVo> findArticles(List<Long> articleIds);
+    List<Article> hot(int size);
+
+    List<Article> news(int size);
 }

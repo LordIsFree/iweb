@@ -9,4 +9,12 @@
             #{id}
         </foreach>
     </select>
+
+    <select id="hot" resultType="com.blog.data.pojo.Article">
+        select * from ms_article order by view_counts desc limit 0,#{size}
+    </select>
+
+    <select id="news" resultType="com.blog.data.pojo.Article">
+        select * from ms_article order by create_date desc limit 0,#{size}
+    </select>
 </mapper>

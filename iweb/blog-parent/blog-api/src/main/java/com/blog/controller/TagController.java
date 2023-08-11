@@ -21,8 +21,8 @@ public class TagController {
      * @return {@link String}
      */
     @GetMapping("hot")
-    public Result hot(int limit){
-        List<TagVo> hots = tagServiceImpl.hot(limit);
+    public Result hot(){
+        List<TagVo> hots = tagServiceImpl.hot(3);
         return Result.success(hots);
     }
 }

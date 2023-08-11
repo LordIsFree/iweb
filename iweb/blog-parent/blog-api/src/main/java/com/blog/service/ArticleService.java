@@ -8,4 +8,7 @@ import java.util.List;
 public interface ArticleService {
     List<ArticleVo> listArticlesPage(PageParams pageParams);
     List<ArticleVo> findArticles(List<Long> articleIds);
+    List<ArticleVo> hot(int size);
+
+    List<ArticleVo> news(int size);
 }

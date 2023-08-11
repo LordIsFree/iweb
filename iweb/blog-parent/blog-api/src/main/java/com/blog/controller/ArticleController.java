@@ -29,4 +29,15 @@ public class ArticleController {
         //vo文章集合 放入放回前端的结果对象
         return Result.success(articleVoList);
     }
+    @PostMapping ("hot")
+    public Result hot(){
+        List<ArticleVo> hot = articlServiceImpl.hot(5);
+        return Result.success(hot);
+    }
+
+    @PostMapping ("new")
+    public Result news(){
+        List<ArticleVo> hot = articlServiceImpl.news(3);
+        return Result.success(hot);
+    }
 }

@@ -1,5 +1,6 @@
 package com.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.blog.data.param.PageParams;
@@ -90,5 +91,22 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleVo> findArticles(List<Long> articleIds){
         //一组文章id ,查询整个articleVo对象
         return articleMapper.findArticles(articleIds);
+    }
+
+    @Override
+    public List<ArticleVo> hot(int limit) {
+        //根据浏览点击数量，查询文章
+        List<Article> articleList = articleMapper.hot(limit);
+        List<ArticleVo> articleVoList = copyArticleList(articleList);
+        return articleVoList;
+    }
+
+    @Override
+    public List<ArticleVo> news(int limit) {
+        //根据时间倒序查询最新文章
+        List<Article> articleList = articleMapper.news(limit);
+        //articleList转化articleVoList
+        List<ArticleVo> articleVoList = copyArticleList(articleList);
+        return articleVoList;
     }
 }
