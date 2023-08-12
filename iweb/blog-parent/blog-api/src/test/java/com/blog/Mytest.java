@@ -1,6 +1,7 @@
 package com.blog;
 
 import com.blog.data.param.PageParams;
+import com.blog.data.pojo.Archives;
 import com.blog.data.pojo.Tag;
 import com.blog.data.vo.ArticleVo;
 import com.blog.data.vo.TagVo;
@@ -59,5 +60,11 @@ public class Mytest {
             List<ArticleVo> value = (List<ArticleVo>) map.get(key);
             value.forEach(System.out::println);
         }
+    }
+
+    @Test
+    public void test5() {
+        List<Archives> archivesList = articleService.listArchives();
+        archivesList.forEach(System.out::println);
     }
 }

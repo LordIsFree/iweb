@@ -11,6 +11,7 @@
     <modules>
         <module>blog-api</module>
         <module>blog-common</module>
+        <module>blog-sso</module>
     </modules>
 
     <parent>
@@ -114,6 +115,17 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.10.10</version>
+        </dependency>
+        <!--md5加密包-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <!--token令牌-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
     </dependencies>
 

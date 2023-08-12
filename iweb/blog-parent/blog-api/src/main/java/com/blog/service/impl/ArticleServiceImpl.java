@@ -1,21 +1,19 @@
 package com.blog.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.blog.data.param.PageParams;
+import com.blog.data.pojo.Archives;
 import com.blog.data.pojo.Article;
 import com.blog.data.vo.ArticleVo;
 import com.blog.data.vo.TagVo;
 import com.blog.mapper.ArticleMapper;
 import com.blog.service.ArticleService;
-import com.blog.mapper.SysUserMapper;
 import com.blog.service.SysUserService;
 import com.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,11 +22,11 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
-    ArticleMapper articleMapper;
+    private ArticleMapper articleMapper;
     @Autowired
-    SysUserService sysUserService;
+    private SysUserService sysUserService;
     @Autowired
-    TagService tagService;
+    private TagService tagService;
 
     @Override
     public List<ArticleVo> listArticlesPage(PageParams pageParams) {
@@ -38,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
         //page对象转为list集合
         List<Article> articleList = pages.getRecords();
         //articleList转为articleVoList
-        List<ArticleVo> articleVoList = copyArticleList(articleList);
+        List<ArticleVo> articleVoList = copyArticleList(articleList,true,false,true,true);
         return articleVoList;
     }
 
@@ -112,5 +110,11 @@ public class ArticleServiceImpl implements ArticleService {
         //articleList转化articleVoList
         List<ArticleVo> articleVoList = copyArticleList(articleList,true,false,true,true);
         return articleVoList;
+    }
+
+    @Override
+    public List<Archives> listArchives() {
+        List<Archives> archivesList = articleMapper.listArchives();
+        return archivesList;
     }
 }

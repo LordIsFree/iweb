@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.data.param.PageParams;
+import com.blog.data.pojo.Archives;
 import com.blog.data.vo.ArticleVo;
 import com.blog.data.vo.Result;
 import com.blog.service.ArticleService;
@@ -39,5 +40,10 @@ public class ArticleController {
     public Result news(){
         List<ArticleVo> hot = articlServiceImpl.news(3);
         return Result.success(hot);
+    }
+    @PostMapping("listArchives")
+    public Result listArchives(){
+        List<Archives> archivesList = articlServiceImpl.listArchives();
+        return Result.success(archivesList);
     }
 }

@@ -3,29 +3,27 @@ package com.blog.service.impl;
 import com.blog.data.pojo.Tag;
 import com.blog.data.vo.ArticleVo;
 import com.blog.data.vo.TagVo;
-import com.blog.mapper.ArticleMapper;
 import com.blog.mapper.TagMapper;
 import com.blog.service.ArticleService;
 import com.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class TagServiceImpl implements TagService {
     @Autowired
-    TagMapper tagMapper;
+    private TagMapper tagMapper;
     @Autowired
-    ArticleService articleService;
+    private ArticleService articleService;
     @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
     public List<TagVo> findTagsByArticleId(Long id) {
@@ -55,6 +53,10 @@ public class TagServiceImpl implements TagService {
     public List<TagVo> hot(int limit) {
         //去数据库中查询寻最热的limit个标签
         List<Tag> tagList = tagMapper.hot(limit);
+        //对于查出来的数据要经行，空处理
+        if(CollectionUtils.isEmpty(tagList)){
+            return Collections.emptyList();
+        }
         //转化为List<TagVo>
         List<TagVo> tagVoList = copyList(tagList);
         //根据标签id 到中间表 查询文章id
