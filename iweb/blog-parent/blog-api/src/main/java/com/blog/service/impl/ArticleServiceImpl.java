@@ -49,12 +49,12 @@ public class ArticleServiceImpl implements ArticleService {
      * @param articleList 文章列表
      * @return {@link List}<{@link ArticleVo}>
      */
-    private List<ArticleVo> copyArticleList(List<Article> articleList) {
+    private List<ArticleVo> copyArticleList(List<Article> articleList,boolean isAuthor,boolean isBody,boolean isTag,boolean isDate) {
         ArrayList<ArticleVo> articleVoList = new ArrayList<>();
         //articleList转为articleList
         for (Article article : articleList) {
             //article转为articleVo
-            ArticleVo articleVo = copyArticleVo(article,true,false,true);
+            ArticleVo articleVo = copyArticleVo(article,isAuthor,isBody,isTag,isDate);
             articleVoList.add(articleVo);
         }
         return articleVoList;
@@ -66,7 +66,7 @@ public class ArticleServiceImpl implements ArticleService {
      * @param article 文章
      * @return {@link ArticleVo}
      */
-    private ArticleVo copyArticleVo(Article article,boolean isAuthor,boolean isBody,boolean isTag) {
+    private ArticleVo copyArticleVo(Article article,boolean isAuthor,boolean isBody,boolean isTag,boolean isDate) {
         ArticleVo articleVo = new ArticleVo();
         if(isAuthor){
             //通过 作者id AuthorId在数据库中查询作者名 id->name
@@ -75,12 +75,14 @@ public class ArticleServiceImpl implements ArticleService {
         }
         //article转为articleVo
         BeanUtils.copyProperties(article, articleVo);
-        //毫毛日期转成正常日期
-        Date date = new Date(article.getCreateDate());
-        //调整提日期格式
-        String createDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
-        //更新日期
-        articleVo.setCreateDate(createDate);
+        if(isDate) {
+            //毫秒日期转成正常日期
+            Date date = new Date(article.getCreateDate());
+            //调整提日期格式
+            String createDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            //更新日期
+            articleVo.setCreateDate(createDate);
+        }
         if(isTag){
             List<TagVo> tagVoList = tagService.findTagsByArticleId(article.getAuthorId());
             articleVo.setTags(tagVoList);
@@ -90,14 +92,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     public List<ArticleVo> findArticles(List<Long> articleIds){
         //一组文章id ,查询整个articleVo对象
-        return articleMapper.findArticles(articleIds);
+        List<Article> articleList = articleMapper.findArticles(articleIds);
+        List<ArticleVo> articleVoList = copyArticleList(articleList,true,false,true,true);
+        return articleVoList;
     }
 
     @Override
     public List<ArticleVo> hot(int limit) {
         //根据浏览点击数量，查询文章
         List<Article> articleList = articleMapper.hot(limit);
-        List<ArticleVo> articleVoList = copyArticleList(articleList);
+        List<ArticleVo> articleVoList = copyArticleList(articleList,true,false,true,true);
         return articleVoList;
     }
 
@@ -106,7 +110,7 @@ public class ArticleServiceImpl implements ArticleService {
         //根据时间倒序查询最新文章
         List<Article> articleList = articleMapper.news(limit);
         //articleList转化articleVoList
-        List<ArticleVo> articleVoList = copyArticleList(articleList);
+        List<ArticleVo> articleVoList = copyArticleList(articleList,true,false,true,true);
         return articleVoList;
     }
 }
