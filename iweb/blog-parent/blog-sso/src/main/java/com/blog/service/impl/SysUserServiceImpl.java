@@ -3,6 +3,8 @@ package com.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.blog.data.pojo.SysUser;
+import com.blog.data.vo.ErrorCode;
+import com.blog.data.vo.Result;
 import com.blog.mapper.SysUserMapper;
 import com.blog.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,19 @@ public class SysUserServiceImpl implements SysUserService {
                 .eq(SysUser::getPassword,password);
         SysUser sysUser = sysUserMapper.selectOne(queryWrapper);
         return sysUser;
+    }
+
+    @Override
+    public void save(SysUser sysUser) {
+        //插入注册用户 id自动生成
+        sysUserMapper.insert(sysUser);
+    }
+
+    @Override
+    public SysUser findUserByAccount(String account) {
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getAccount,account);
+        queryWrapper.last("limit 1");
+        return sysUserMapper.selectOne(queryWrapper);
     }
 }
