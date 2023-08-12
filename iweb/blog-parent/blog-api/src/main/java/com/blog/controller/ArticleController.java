@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin
 public class ArticleController {
     @Autowired
-    ArticleService articlServiceImpl;
+    ArticleService articleServiceImpl;
 
     /**
      * 文章分页展示请求
@@ -26,24 +26,29 @@ public class ArticleController {
     @PostMapping
     public Result articles(@RequestBody PageParams pageParams) {
         //调service获得一个vo文章集合
-        List<ArticleVo> articleVoList = articlServiceImpl.listArticlesPage(pageParams);
+        List<ArticleVo> articleVoList = articleServiceImpl.listArticlesPage(pageParams);
         //vo文章集合 放入放回前端的结果对象
         return Result.success(articleVoList);
     }
     @PostMapping ("hot")
     public Result hot(){
-        List<ArticleVo> hot = articlServiceImpl.hot(5);
+        List<ArticleVo> hot = articleServiceImpl.hot(5);
         return Result.success(hot);
     }
 
     @PostMapping ("new")
     public Result news(){
-        List<ArticleVo> hot = articlServiceImpl.news(3);
+        List<ArticleVo> hot = articleServiceImpl.news(3);
         return Result.success(hot);
     }
     @PostMapping("listArchives")
     public Result listArchives(){
-        List<Archives> archivesList = articlServiceImpl.listArchives();
+        List<Archives> archivesList = articleServiceImpl.listArchives();
         return Result.success(archivesList);
+    }
+    @PostMapping("view/{id}")
+    public Result findArticleById(@PathVariable("id") Long id) {
+        ArticleVo articleVo = articleServiceImpl.findArticleById(id);
+        return Result.success(articleVo);
     }
 }

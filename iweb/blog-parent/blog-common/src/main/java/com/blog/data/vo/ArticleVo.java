@@ -16,4 +16,7 @@ public class ArticleVo implements Serializable {
     private String createDate;
     private String author;
     private List<TagVo> tags;
+    //以上为老师上课讲的属性  以下为看文档后新增加属性
+    private ArticleBodyVo body;
+    private CategoryVo category;
 }

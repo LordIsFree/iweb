@@ -14,4 +14,6 @@ public interface ArticleService {
     List<ArticleVo> news(int size);
 
     List<Archives> listArchives();
+
+    ArticleVo findArticleById(Long id);
 }
