@@ -8,8 +8,10 @@ import com.blog.data.util.JWTUtils;
 import com.blog.data.vo.ErrorCode;
 import com.blog.data.vo.LoginUserVo;
 import com.blog.data.vo.Result;
+import com.blog.data.vo.UserVo;
 import com.blog.mapper.SysUserMapper;
 import com.blog.service.SysUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -59,5 +61,16 @@ public class SysUserServiceImpl implements SysUserService {
         loginUserVo.setNickname(sysUser.getNickname());
         loginUserVo.setAvatar(sysUser.getAvatar());
         return Result.success(loginUserVo);
+    }
+
+    @Override
+    public UserVo findUserVoById(Long authorId) {
+        SysUser sysUser = sysUserMapper.selectById(authorId);
+        return copySysUser(sysUser);
+    }
+    private UserVo copySysUser(SysUser sysUser){
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(sysUser,userVo);
+        return userVo;
     }
 }
