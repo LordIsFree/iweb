@@ -1,5 +1,7 @@
 package com.blog.data.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Data
 public class ArticleVo implements Serializable {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String title;
     private String summary;

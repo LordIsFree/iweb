@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     SysUserService sysUserServiceImpl;
+    //用户详情
     @GetMapping("currentUser")
     public Result currentUser(@RequestHeader("Authorization")String token){
         return sysUserServiceImpl.getUserInfoByToken(token);

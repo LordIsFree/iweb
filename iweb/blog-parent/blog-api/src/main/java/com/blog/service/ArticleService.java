@@ -1,8 +1,10 @@
 package com.blog.service;
 
+import com.blog.data.param.ArticleParam;
 import com.blog.data.param.PageParams;
 import com.blog.data.pojo.Archives;
 import com.blog.data.vo.ArticleVo;
+import com.blog.data.vo.Result;
 
 import java.util.List;
 
@@ -16,4 +18,6 @@ public interface ArticleService {
     List<Archives> listArchives();
 
     ArticleVo findArticleById(Long id);
+
+    Result publish(ArticleParam articleParam);
 }

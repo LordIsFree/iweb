@@ -27,4 +27,8 @@ public class TagController {
         List<TagVo> hots = tagServiceImpl.hot(3);
         return Result.success(hots);
     }
+    @GetMapping
+    public Result findAll(){
+        return tagServiceImpl.findAll();
+    }
 }

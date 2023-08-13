@@ -1,7 +1,10 @@
 package com.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.blog.data.pojo.Tag;
 import com.blog.data.vo.ArticleVo;
+import com.blog.data.vo.Result;
 import com.blog.data.vo.TagVo;
 import com.blog.mapper.TagMapper;
 import com.blog.service.ArticleService;
@@ -71,6 +74,12 @@ public class TagServiceImpl implements TagService {
             redisTemplate.expire("hot",10, TimeUnit.MINUTES);
         }
         return tagVoList;
+    }
+
+    @Override
+    public Result findAll() {
+        List<Tag> tagList = tagMapper.selectList(new QueryWrapper<Tag>());
+        return Result.success(copyList(tagList));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import com.blog.data.param.ArticleParam;
 import com.blog.data.param.PageParams;
 import com.blog.data.pojo.Archives;
 import com.blog.data.vo.ArticleVo;
@@ -30,25 +31,33 @@ public class ArticleController {
         //vo文章集合 放入放回前端的结果对象
         return Result.success(articleVoList);
     }
+    //最热文章
     @PostMapping ("hot")
     public Result hot(){
         List<ArticleVo> hot = articleServiceImpl.hot(5);
         return Result.success(hot);
     }
-
+    //最新文章
     @PostMapping ("new")
     public Result news(){
         List<ArticleVo> hot = articleServiceImpl.news(3);
         return Result.success(hot);
     }
+    //文章归档
     @PostMapping("listArchives")
     public Result listArchives(){
         List<Archives> archivesList = articleServiceImpl.listArchives();
         return Result.success(archivesList);
     }
+    //查看文章
     @PostMapping("view/{id}")
     public Result findArticleById(@PathVariable("id") Long id) {
         ArticleVo articleVo = articleServiceImpl.findArticleById(id);
         return Result.success(articleVo);
+    }
+    //发布文章
+    @PostMapping("publish")
+    public Result publish(@RequestBody ArticleParam articleParam){
+        return articleServiceImpl.publish(articleParam);
     }
 }
