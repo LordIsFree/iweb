@@ -8,4 +8,8 @@ public class PageParams {
     private int page=1;
     //当前页面条数
     private int pageSize=3;
+
+    private Long categoryId;
+
+    private Long tagId;
 }

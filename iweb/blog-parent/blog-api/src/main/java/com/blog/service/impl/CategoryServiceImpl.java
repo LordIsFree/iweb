@@ -31,9 +31,25 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Result findAll() {
         List<Category> categories = this.categoryMapper.selectList(new LambdaQueryWrapper<>());
-        return Result.success(copyCategory(categories));
+        return Result.success(copyCategoryList(categories));
     }
-    private List<CategoryVo> copyCategory(List<Category> categoryList){
+
+    @Override
+    public Result findAllDetail() {
+        List<Category> categories = categoryMapper.selectList(new LambdaQueryWrapper<>());
+        //页面交互的对象
+        return Result.success(copyCategoryList(categories));
+    }
+
+    @Override
+    public Result categoriesDetailById(Long id) {
+        Category category = categoryMapper.selectById(id);
+        CategoryVo categoryVo = new CategoryVo();
+        BeanUtils.copyProperties(category,categoryVo);
+        return Result.success(categoryVo);
+    }
+
+    private List<CategoryVo> copyCategoryList(List<Category> categoryList){
         ArrayList<CategoryVo> categoryvoArrayList = new ArrayList<>();
         for (Category category: categoryList){
             CategoryVo categoryVo = new CategoryVo();

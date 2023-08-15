@@ -1,5 +1,6 @@
 package com.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.blog.data.pojo.Tag;
@@ -80,6 +81,21 @@ public class TagServiceImpl implements TagService {
     public Result findAll() {
         List<Tag> tagList = tagMapper.selectList(new QueryWrapper<Tag>());
         return Result.success(copyList(tagList));
+    }
+
+    @Override
+    public Result findAllDetail() {
+        LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
+        List<Tag> tags = this.tagMapper.selectList(queryWrapper);
+        return Result.success(copyList(tags));
+    }
+
+    @Override
+    public Result findDetailById(Long id) {
+        Tag tag = tagMapper.selectById(id);
+        TagVo tagVo = new TagVo();
+        BeanUtils.copyProperties(tag,tagVo);
+        return Result.success(tagVo);
     }
 
 }

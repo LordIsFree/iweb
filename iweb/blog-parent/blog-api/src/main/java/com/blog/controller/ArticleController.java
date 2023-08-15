@@ -60,4 +60,5 @@ public class ArticleController {
     public Result publish(@RequestBody ArticleParam articleParam){
         return articleServiceImpl.publish(articleParam);
     }
+
 }

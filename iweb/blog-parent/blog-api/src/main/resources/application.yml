@@ -10,6 +10,12 @@ spring:
     host: 192.168.205.130
     port: 6379
     password: 206321
+    ## 上传文件总的最大值
+  servlet:
+    multipart:
+      max-request-size: 20MB
+    ## 单个文件的最大值
+      max-file-size: 2MB
 mybatis-plus:
   mapper-locations: mapper/*.xml
   configuration:

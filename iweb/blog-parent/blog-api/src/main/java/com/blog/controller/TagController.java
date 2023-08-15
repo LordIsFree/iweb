@@ -4,10 +4,7 @@ import com.blog.data.vo.Result;
 import com.blog.data.vo.TagVo;
 import com.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +19,7 @@ public class TagController {
      *
      * @return {@link String}
      */
+
     @GetMapping("hot")
     public Result hot(){
         List<TagVo> hots = tagServiceImpl.hot(3);
@@ -30,5 +28,14 @@ public class TagController {
     @GetMapping
     public Result findAll(){
         return tagServiceImpl.findAll();
+    }
+    @GetMapping("detail")
+    public Result findAllDetail(){
+        return tagServiceImpl.findAllDetail();
+    }
+
+    @GetMapping("detail/{id}")
+    public Result findDetailById(@PathVariable("id") Long id){
+        return tagServiceImpl.findDetailById(id);
     }
 }

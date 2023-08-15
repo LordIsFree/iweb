@@ -40,12 +40,44 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleVo> listArticlesPage(PageParams pageParams) {
         //数据库拿Articles数据
-        Page page = new Page(pageParams.getPage(), pageParams.getPageSize());
-        Page pages = articleMapper.selectPage(page, new QueryWrapper<Article>());
-        //page对象转为list集合
-        List<Article> articleList = pages.getRecords();
-        //articleList转为articleVoList
-        List<ArticleVo> articleVoList = copyArticleList(articleList,true
+//        Page page = new Page(pageParams.getPage(), pageParams.getPageSize());
+//        Page pages = articleMapper.selectPage(page, new QueryWrapper<Article>());
+//        //page对象转为list集合
+//        List<Article> articleList = pages.getRecords();
+//        //articleList转为articleVoList
+//        List<ArticleVo> articleVoList = copyArticleList(articleList,true
+//                ,false,true,true,false);
+//        return articleVoList;
+
+
+        /**
+         * 1. 分页查询 article数据库表
+         */
+        Page<Article> page = new Page<>(pageParams.getPage(),pageParams.getPageSize());
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        if (pageParams.getCategoryId() != null) {
+            queryWrapper.eq(Article::getCategoryId,pageParams.getCategoryId());
+        }
+        List<Long> articleIdList = new ArrayList<>();
+        if (pageParams.getTagId() != null){
+            LambdaQueryWrapper<ArticleTag> articleTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            articleTagLambdaQueryWrapper.eq(ArticleTag::getTagId,pageParams.getTagId());
+            List<ArticleTag> articleTags = articleTagMapper.selectList(articleTagLambdaQueryWrapper);
+            for (ArticleTag articleTag : articleTags) {
+                articleIdList.add(articleTag.getArticleId());
+            }
+            if (articleIdList.size() > 0){
+                queryWrapper.in(Article::getId,articleIdList);
+            }
+        }
+
+        //是否置顶进行排序
+        //order by create_date desc
+        queryWrapper.orderByDesc(Article::getWeight,Article::getCreateDate);
+        Page<Article> articlePage = articleMapper.selectPage(page, queryWrapper);
+        List<Article> records = articlePage.getRecords();
+        //能直接返回吗？ 很明显不能
+        List<ArticleVo> articleVoList = copyArticleList(records,true
                 ,false,true,true,false);
         return articleVoList;
     }
